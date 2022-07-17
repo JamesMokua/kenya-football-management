@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate,useLocation} from 'react-router-dom'
-
+import Navbars from '../constants/Navbar';
 
 const Home = () => {
   let navigate = useNavigate();
@@ -21,6 +21,8 @@ const Home = () => {
     }
 };
   return (
+    <>
+    <Navbars/>
     <div className="text-center" >
     <h1 className="main-title home-page-title">welcome to our app {state}</h1>
  
@@ -29,6 +31,7 @@ const Home = () => {
 
    
 </div>
+</>
   )
 }
 

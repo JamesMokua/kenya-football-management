@@ -75,6 +75,23 @@ app.post("/register", (req, res) => {
   });
 });
 
+//create facilitator 
+app.post("/createfacilitator", (req, res) => {
+  const name = req.body.name;
+  const contact = req.body.contact;
+  const gender = req.body.gender;
+  const address = req.body.address;
+  const position = req.body.position;
+
+   
+    db.query(
+      "INSERT INTO facilitator (name,gender,contact,address,position) VALUES (?,?,?,?,?)",
+      [name,gender,contact,address,position],
+      (err, result) => {
+       console.log(err)
+      }
+    );
+  });
 app.get("/login", (req, res) => {
    if (req.session.user) {
      res.send({ loggedIn: true, user: req.session.user });
@@ -111,6 +128,41 @@ app.get("/login", (req, res) => {
      }
    );
  });
+ 
+app.get("/adminlogin", (req, res) => {
+  if (req.session.user) {
+    res.send({ loggedIn: true, user: req.session.user });
+  } else {
+    res.send({ loggedIn: false });
+  }
+});
+
+app.post("/adminlogin", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  db.query(
+    "SELECT * FROM admin WHERE username = ? AND password = ?;",
+    [username,password],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      }
+
+      if (result.length > 0) {
+        
+         
+            req.session.user = result;
+            console.log(req.session.user);
+            res.send(result);
+      }else {
+            res.send({ message: "Wrong username/password combination!" });
+          }
+        
+      })
+    }
+  );
+
 
 //logout 
 app.get('/logout', async (request, response) => {
