@@ -92,6 +92,22 @@ app.post("/createfacilitator", (req, res) => {
       }
     );
   });
+  //create club
+app.post("/createclub", (req, res) => {
+  const clubName = req.body.clubName;
+  const clubAddress = req.body.clubAddress;
+  const clubCoach = req.body.clubCoach;
+ 
+
+   
+    db.query(
+      "INSERT INTO club (clubname,clubaddress,clubcoach) VALUES (?,?,?)",
+      [clubName,clubAddress,clubCoach],
+      (err, result) => {
+       console.log(err)
+      }
+    );
+  });
 app.get("/login", (req, res) => {
    if (req.session.user) {
      res.send({ loggedIn: true, user: req.session.user });
@@ -99,6 +115,28 @@ app.get("/login", (req, res) => {
      res.send({ loggedIn: false });
    }
  });
+ //get facilitator data
+  app.get("/facilitator", (req, res) => {
+    db.query("SELECT * FROM facilitator", (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    });
+  }
+  );
+   //get club data
+   app.get("/club", (req, res) => {
+    db.query("SELECT * FROM club", (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    });
+  }
+  );
 
  app.post("/login", (req, res) => {
    const username = req.body.username;
